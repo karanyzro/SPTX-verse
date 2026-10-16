@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Ressources Verse pour UEFN : lis le code, copie-le et teste-le dans ton île.">
+<meta name="theme-color" content="#0a0a0a">
+<title>SPTX Verse</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Instrument+Serif:ital@1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--panel:#111010;--line:rgba(232,168,86,.16);--amber:#e8a856;--amber2:#ffd48a;--txt:#f3efe6;--mut:#a39b8c;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--txt);font:400 15px/1.6 Inter,system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:60}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.glow{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(900px 500px at 75% 30%,rgba(232,168,86,.12),transparent 70%),radial-gradient(600px 400px at 10% 90%,rgba(232,168,86,.05),transparent 70%)}
+.mono{font-family:"JetBrains Mono",monospace}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--amber2);outline-offset:3px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px clamp(16px,4vw,48px);background:rgba(10,10,10,.72);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:10px;font:400 15px "Archivo Black";letter-spacing:.02em}
+.logo i{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:#17130d;border:1px solid var(--line);color:var(--amber2);font:400 14px "Archivo Black";font-style:normal;box-shadow:0 0 18px rgba(232,168,86,.25)}
+nav{display:flex;gap:4px;flex-wrap:wrap}
+nav a{padding:6px 12px;border-radius:8px;color:var(--mut);font-size:13px;transition:.2s}
+nav a:hover,nav a.on{color:var(--txt);background:rgba(232,168,86,.09)}
+nav a.on{box-shadow:inset 0 -2px 0 var(--amber)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--txt);font:500 14px Inter;cursor:pointer;transition:.25s}
+.btn:hover{border-color:var(--amber);box-shadow:0 0 24px rgba(232,168,86,.22)}
+.btn.pri{background:linear-gradient(180deg,var(--amber2),var(--amber));color:#1a1206;border:0;font-weight:600;box-shadow:0 6px 30px rgba(232,168,86,.3)}
+.btn.pri:hover{box-shadow:0 8px 42px rgba(255,212,138,.55)}
+main{position:relative;z-index:2;padding:0 clamp(16px,4vw,48px)}
+section.page{display:none;max-width:1180px;margin:0 auto;padding:56px 0 80px}
+section.page.on{display:block}
+h1,h2,h3{font-family:"Archivo Black";font-weight:400;letter-spacing:-.025em;line-height:1;margin:0}
+h1.big{font-size:clamp(48px,9vw,112px)}
+h1.big em,.ital{font:italic 400 1.05em "Instrument Serif";letter-spacing:0;background:linear-gradient(90deg,var(--amber2),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent;display:block;margin-top:6px}
+h2.t{font-size:clamp(32px,5vw,54px)}
+.lbl{font:500 12px "JetBrains Mono";color:var(--amber);letter-spacing:.08em;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.lbl::before{content:"";width:26px;height:1px;background:var(--amber)}
+.lead{color:var(--mut);max-width:56ch;margin:18px 0 0}
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;min-height:68vh}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.code{position:relative;border-radius:14px;background:linear-gradient(180deg,#14110c,#0c0b09);border:1px solid var(--line);box-shadow:0 0 70px rgba(232,168,86,.14),inset 0 0 0 1px rgba(255,255,255,.02);overflow:hidden}
+.code::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--amber2),transparent)}
+.code .bar{display:flex;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--line);font:400 12px "JetBrains Mono";color:var(--mut)}
+.code .bar b{color:var(--amber2);font-weight:500}
+.code pre{margin:0;padding:18px;font:400 13px/1.8 "JetBrains Mono";overflow-x:auto;color:#d8d0c0;min-height:260px}
+.k{color:var(--amber2)}.c{color:#7d7566}.f{color:#9ec5ff}
+.caret{display:inline-block;width:8px;height:15px;background:var(--amber);vertical-align:-2px;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+.strip{margin:24px calc(-1*clamp(16px,4vw,48px));overflow:hidden;background:linear-gradient(90deg,#b9803a,var(--amber2),#b9803a);color:#1a1206;font:500 12px "JetBrains Mono";padding:9px 0;box-shadow:0 0 50px rgba(232,168,86,.3)}
+.strip div{display:flex;gap:28px;width:max-content;animation:mq 28s linear infinite;white-space:nowrap}
+@keyframes mq{to{transform:translateX(-50%)}}
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+.card{position:relative;padding:22px;border-radius:14px;background:rgba(17,16,14,.78);border:1px solid var(--line);overflow:hidden;--mx:50%;--my:0%}
+.card::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(320px circle at var(--mx) var(--my),rgba(255,212,138,.14),transparent 65%)}
+.card:hover{border-color:rgba(232,168,86,.45)}.card:hover::after{opacity:1}
+.card h3{font-size:19px;margin:6px 0 8px;letter-spacing:-.01em}.card p{margin:0 0 16px;color:var(--mut);font-size:14px}
+.card .num{font:400 38px "Archivo Black";color:var(--txt)}
+.tag{font:500 11px "JetBrains Mono";color:var(--amber)}
+.empty{padding:22px;border:1px dashed var(--line);border-radius:14px;color:var(--mut);background:rgba(17,16,14,.5)}
+.row{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin:48px 0 18px}
+input,select,textarea{width:100%;padding:11px 13px;border-radius:10px;border:1px solid var(--line);background:#0d0c0a;color:var(--txt);font:400 14px Inter}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(232,168,86,.16)}
+label{display:block;font-size:13px;font-weight:500;margin:14px 0 6px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.chip{padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--mut);font:500 12px "JetBrains Mono";cursor:pointer}
+.chip.on{background:var(--amber);color:#1a1206;border-color:var(--amber);box-shadow:0 0 20px rgba(232,168,86,.4)}
+.tools{display:grid;grid-template-columns:1fr 200px;gap:14px;margin-top:26px}
+.side{display:grid;grid-template-columns:340px 1fr;gap:24px;margin-top:30px;align-items:start}
+.note{color:var(--amber2);font-size:13px;margin-top:14px}
+footer{position:relative;z-index:2;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:26px clamp(16px,4vw,48px);border-top:1px solid var(--line);color:var(--mut);font-size:13px}
+/* intro */
+#intro{position:fixed;inset:0;z-index:100;background:var(--bg);display:grid;place-items:center;overflow:hidden}
+#intro .half{position:absolute;inset:0;background:var(--bg);transition:transform 1.2s cubic-bezier(.65,0,.15,1);will-change:transform}
+#intro.open .l{transform:translateX(-62%)}#intro.open .r{transform:translateX(62%)}
+#intro .ctr{position:relative;text-align:center;transition:opacity .4s}
+#intro .mark{width:76px;height:76px;margin:0 auto 22px;border-radius:50%;display:grid;place-items:center;font:400 34px "Archivo Black";color:#fff;text-shadow:0 0 18px #cfe0ff;background:radial-gradient(circle,#10101a 40%,rgba(232,168,86,.28) 70%,transparent 72%);box-shadow:0 0 60px rgba(232,168,86,.25)}
+#intro .nm{font:500 12px "JetBrains Mono";letter-spacing:.5em;color:#ddd}
+#intro .pb{width:120px;height:2px;background:#222;margin:16px auto 0;overflow:hidden}
+#intro .pb i{display:block;height:100%;width:0;background:var(--amber);box-shadow:0 0 10px var(--amber);transition:width 1s ease}
+#bolt{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#bolt path{fill:none;stroke-linejoin:round;filter:drop-shadow(0 0 8px #e8a856) drop-shadow(0 0 22px #e8a856)}
+#burst{position:absolute;left:50%;top:50%;width:10px;height:10px;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,212,138,.5),transparent 70%);opacity:0;transition:all 1s ease-out}
+#intro.hit #burst{width:1400px;height:760px;opacity:1}
+#intro.done{display:none}
+@media(max-width:860px){.hero,.side,.g3,.g2,.tools{grid-template-columns:1fr}nav{display:none}.hero{min-height:0}}
+@media(prefers-reduced-motion:reduce){#intro{display:none}.strip div,.caret{animation:none}}
+
+[hidden]{display:none!important}
+.acts{display:flex;gap:8px;align-items:center}.usr{font-size:13px;color:var(--amber2)}
+.btn{position:relative;overflow:hidden}
+.btn::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.38) 50%,transparent 65%);transform:translateX(-130%);transition:transform .8s}
+.btn:hover::before{transform:translateX(130%)}
+.btn.pri{background:linear-gradient(180deg,#fff3d6 0%,var(--amber2) 38%,#d9953f 100%);box-shadow:0 6px 30px rgba(232,168,86,.35),inset 0 1px 0 rgba(255,255,255,.75),inset 0 -2px 6px rgba(120,60,0,.3)}
+.card{background:linear-gradient(160deg,rgba(255,236,200,.08),rgba(17,16,14,.82) 40%);box-shadow:inset 0 1px 0 rgba(255,236,200,.16),0 24px 50px -28px #000}
+.card::before{content:"";position:absolute;left:8%;right:8%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,226,170,.85),transparent)}
+.card:hover{transform:translateY(-3px);box-shadow:inset 0 1px 0 rgba(255,236,200,.25),0 0 40px -8px rgba(232,168,86,.35)}.card{transition:transform .3s,box-shadow .3s,border-color .3s}
+.code{-webkit-box-reflect:below 10px linear-gradient(transparent 62%,rgba(255,212,138,.16));animation:pulse 4s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 110px rgba(232,168,86,.3),inset 0 0 0 1px rgba(255,255,255,.03)}}
+.shine{background:linear-gradient(100deg,#bdb6a8 0%,#fff 35%,#ffe3a6 50%,#fff 65%,#bdb6a8 100%);background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sh 5s linear infinite;display:inline-block;filter:drop-shadow(0 4px 24px rgba(232,168,86,.25))}
+@keyframes sh{to{background-position:-260% 0}}
+#spot{position:fixed;left:0;top:0;width:780px;height:780px;margin:-390px 0 0 -390px;z-index:1;pointer-events:none;background:radial-gradient(circle,rgba(255,212,138,.13),transparent 66%);will-change:transform}
+.hero{position:relative}
+.hbolt{position:absolute;left:calc(52% - 16px);top:-70px;height:calc(100% + 140px);width:32px;pointer-events:none;overflow:visible;filter:drop-shadow(0 0 6px #e8a856) drop-shadow(0 0 20px #e8a856);animation:fk 3.2s infinite}
+@keyframes fk{0%,100%{opacity:.9}46%{opacity:.55}50%{opacity:1}54%{opacity:.6}}
+.cd{margin:0 0 14px;padding:12px;border-radius:10px;background:#0a0908;border:1px solid var(--line);font-size:12px;line-height:1.6;color:#d8d0c0;overflow-x:auto;max-height:180px}
+.modal{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:rgba(0,0,0,.68);backdrop-filter:blur(10px);padding:16px}
+.box{width:min(420px,100%);padding:28px;box-shadow:0 0 90px rgba(232,168,86,.22),inset 0 1px 0 rgba(255,236,200,.2)}
+.x{position:absolute;right:14px;top:12px;background:none;border:0;color:var(--mut);cursor:pointer;font-size:16px;z-index:2}
+#intro .mark{animation:mk 1.6s ease-in-out infinite}@keyframes mk{50%{box-shadow:0 0 110px rgba(232,168,86,.5)}}
+#ring{position:absolute;left:50%;top:50%;width:20px;height:20px;border:2px solid rgba(255,212,138,.9);border-radius:50%;opacity:0;pointer-events:none}
+@keyframes ring{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(-50%,-50%) scale(110);opacity:0}}
+#intro.hit #ring{animation:ring 1.2s ease-out}
+#flash{position:absolute;inset:0;background:radial-gradient(circle,rgba(255,240,210,.7),transparent 60%);opacity:0;pointer-events:none}
+@keyframes fl{0%{opacity:1}100%{opacity:0}}#intro.hit #flash{animation:fl .8s ease-out}
+@media(max-width:860px){.hbolt{display:none}.code{-webkit-box-reflect:unset}}
+@media(prefers-reduced-motion:reduce){.shine,.hbolt,.code{animation:none}}
+
+.glow{background:radial-gradient(1000px 560px at 74% 26%,rgba(232,168,86,.2),transparent 70%),radial-gradient(700px 420px at 8% 92%,rgba(232,168,86,.1),transparent 70%)}
+header{box-shadow:0 1px 40px rgba(232,168,86,.08)}
+h1.big{font-size:clamp(52px,8.4vw,118px);line-height:.95}
+h1.big em{font-size:.5em;line-height:1.15;margin-top:16px}
+h2.t{text-shadow:0 0 44px rgba(232,168,86,.25)}
+.ln{display:block;overflow:hidden;padding:.06em 0 .12em}.ln>span{display:inline-block;transition:transform 1s cubic-bezier(.2,.8,.2,1) .1s}
+.wipe{transition:clip-path 1.1s cubic-bezier(.6,0,.2,1) .7s}
+.up{transition:opacity .8s var(--d,0s),transform .8s cubic-bezier(.2,.8,.2,1) var(--d,0s)}
+.slide{transition:opacity 1s .5s,transform 1.2s cubic-bezier(.2,.8,.2,1) .5s}
+.kk,header{transition:opacity .8s .2s}
+.wait:not(.go) header,.wait:not(.go) .up,.wait:not(.go) .kk,.wait:not(.go) .slide{opacity:0}
+.wait:not(.go) .up{transform:translateY(18px)}.wait:not(.go) .slide{transform:translateX(70px)}
+.wait:not(.go) .ln>span{transform:translateY(112%)}.wait:not(.go) .wipe{clip-path:inset(0 100% 0 0)}
+.wait:not(.go) .hbolt{animation:none;opacity:0}
+.hbolt{animation:hb 1.4s ease 1.1s backwards,fk 3.2s 2.5s infinite}@keyframes hb{from{opacity:0}}
+.sec{position:relative;margin-top:96px}.sec::before{content:"";position:absolute;top:-48px;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(232,168,86,.7),transparent);opacity:.5}
+.stp{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font:400 15px "Archivo Black";color:#1a1206;background:linear-gradient(180deg,#fff3d6,var(--amber));box-shadow:0 0 26px rgba(232,168,86,.55)}
+.band{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding:34px;box-shadow:0 0 90px rgba(232,168,86,.2),inset 0 1px 0 rgba(255,236,200,.2)}
+.fcol{display:flex;flex-direction:column;gap:8px}.fcol a:hover{color:var(--amber2)}
+footer{align-items:flex-start;gap:40px}
+#intro .nm{font-size:13px;letter-spacing:.6em;padding-left:.6em;color:#e9e4d8}
+#halo{position:absolute;left:50%;top:50%;width:150px;height:360px;border-radius:50%;transform:translate(-50%,-50%) scale(.3);opacity:0;background:radial-gradient(ellipse,rgba(255,205,125,.6),rgba(232,168,86,.2) 45%,transparent 70%);filter:blur(10px);transition:transform 1.5s cubic-bezier(.2,.7,.2,1),opacity .5s;pointer-events:none}
+#intro.hit #halo{opacity:1;transform:translate(-50%,-50%) scale(8,3.4)}
+#intro.open #halo{opacity:0;transition:opacity 1.3s}
+#intro.open .l{transform:translateX(-72%)}#intro.open .r{transform:translateX(72%)}
+
+#intro .orb{position:relative;width:78px;height:78px;margin:0 auto 24px;border-radius:50%;background:radial-gradient(circle,#0f0f13 36%,rgba(232,168,86,.38) 66%,transparent 70%);box-shadow:0 0 70px rgba(232,168,86,.28);animation:mk 1.6s ease-in-out infinite}
+#intro .orb::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:12px;margin:-6px;border-radius:50%;background:#fff;box-shadow:0 0 22px 6px rgba(190,215,255,.85)}
+#halo{background:radial-gradient(ellipse,rgba(235,205,150,.55),rgba(232,168,86,.18) 45%,transparent 70%)}
+.ln>em{display:block;transition:transform 1s cubic-bezier(.2,.8,.2,1) .4s}
+.wait:not(.go) .ln>em{transform:translateY(125%)}
+#intro .pct{margin-top:14px;font:500 11px "JetBrains Mono",monospace;color:var(--amber);letter-spacing:.25em;padding-left:.25em}
+.coord{position:absolute;right:0;top:-34px;font:500 11px "JetBrains Mono",monospace;color:var(--mut);letter-spacing:.14em}
+@media(max-width:860px){.coord{display:none}}
+#halo{background:radial-gradient(ellipse,rgba(246,224,184,.7),rgba(232,168,86,.22) 45%,transparent 70%)}
+#intro .orb::after{width:14px;height:14px;margin:-7px;box-shadow:0 0 26px 10px rgba(200,220,255,.9),0 0 70px 24px rgba(255,255,255,.22)}
+#intro.wave{background:transparent}
+#intro .ctr{position:relative;z-index:1}
+#wv{position:absolute;inset:0;width:100%;height:100%}
+section.page.on{animation:pin .5s cubic-bezier(.2,.8,.2,1)}@keyframes pin{from{opacity:0;transform:translateY(10px)}}
+#prog{position:fixed;left:0;top:env(safe-area-inset-top,0px);height:2px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--amber),var(--amber2));box-shadow:0 0 12px var(--amber);z-index:70;pointer-events:none}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);padding:12px 20px;border-radius:12px;background:rgba(20,17,12,.96);border:1px solid var(--amber);color:var(--txt);font-size:14px;box-shadow:0 0 40px rgba(232,168,86,.3);opacity:0;pointer-events:none;transition:.3s;z-index:95;max-width:90vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+#intro .skip{position:absolute;left:0;right:0;bottom:calc(28px + env(safe-area-inset-bottom,0px));text-align:center;font:500 11px "JetBrains Mono",monospace;letter-spacing:.14em;color:var(--mut);opacity:.7;z-index:1;pointer-events:none}
+#intro.wave .skip{opacity:0}#intro{cursor:pointer}
+.burger{display:none;width:40px;height:40px;flex:none;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.03);cursor:pointer;position:relative}
+.burger::before,.burger::after{content:"";position:absolute;left:11px;right:11px;height:2px;background:var(--txt);border-radius:2px;transition:.3s}
+.burger::before{top:15px}.burger::after{top:23px}
+.burger[aria-expanded=true]::before{top:19px;transform:rotate(45deg)}.burger[aria-expanded=true]::after{top:19px;transform:rotate(-45deg)}
+@media(max-width:860px){.burger{display:block}nav{display:flex!important;position:absolute;left:0;right:0;top:100%;flex-direction:column;padding:10px clamp(16px,4vw,48px) 16px;background:#0a0a0a;border-bottom:1px solid var(--line);transform:translateY(-8px);opacity:0;pointer-events:none;transition:.25s}nav.open{transform:none;opacity:1;pointer-events:auto}nav a{padding:12px;font-size:15px}.acts .btn{padding:9px 12px;font-size:13px}.logo{font-size:14px}}
+@media(max-width:560px){.hs,.usr{display:none}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pc{padding:0;display:flex;flex-direction:column}
+.cov{position:relative;aspect-ratio:16/10;background-color:#14110c;background-image:radial-gradient(circle at 30% 20%,rgba(232,168,86,.4),transparent 60%),linear-gradient(160deg,#1a140c,#0c0b09);background-size:cover;background-position:center;border-bottom:1px solid var(--line);overflow:hidden}
+.ph{position:absolute;inset:0;display:grid;place-items:center;font:400 40px "JetBrains Mono",monospace;color:rgba(255,226,170,.22);letter-spacing:.1em}
+.bdg{position:absolute;left:14px;top:14px;padding:7px 12px;border-radius:8px;background:#a8e87a;color:#10200a;font:700 12px "JetBrains Mono",monospace;letter-spacing:.14em;z-index:1}.bdg.pay{background:var(--amber2);color:#1a1206}
+.demo{position:absolute;right:14px;top:14px;padding:7px 12px;border-radius:8px;background:rgba(10,12,16,.82);border:1px solid rgba(255,255,255,.12);color:#fff;font:700 12px "JetBrains Mono",monospace;letter-spacing:.14em;backdrop-filter:blur(6px);z-index:1;transition:.2s}.demo:hover{border-color:var(--amber);box-shadow:0 0 20px rgba(232,168,86,.35)}
+.no{position:absolute;left:14px;bottom:14px;font:700 15px "JetBrains Mono",monospace;letter-spacing:.14em;color:#fff;text-shadow:0 2px 10px #000;z-index:1}
+.pb2{padding:20px 22px 6px;flex:1}
+.pm{display:flex;justify-content:space-between;font:500 12px "JetBrains Mono",monospace;letter-spacing:.16em}.pm .cat{color:var(--amber);text-transform:uppercase}.pm .ver{color:var(--mut)}
+.pb2 h3{font-size:20px;margin:12px 0 10px;text-transform:uppercase;line-height:1.15}
+.pb2 p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin:0 0 16px;color:var(--mut)}
+.mt{display:flex;gap:18px;align-items:center;font:400 13px "JetBrains Mono",monospace;color:var(--mut);margin-bottom:10px}.mt svg{vertical-align:-3px}.st{color:var(--amber2);font-weight:700}
+.pf{display:flex;justify-content:space-between;align-items:center;margin:8px 22px 22px;padding-top:18px;border-top:1px solid var(--line)}
+.pf b{font:400 30px "Archivo Black";letter-spacing:-.02em}.fr{color:#a8e87a}.pr{color:var(--amber2)}
+.dl{width:52px;height:46px;display:grid;place-items:center;border-radius:10px;border:0;background:#a8e87a;color:#10200a;cursor:pointer;transition:.25s}.dl.pay{background:var(--amber2);color:#1a1206}
+.dl:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(168,232,122,.4)}.dl.pay:hover{box-shadow:0 8px 28px rgba(232,168,86,.5)}
+.hbolt{height:calc(100% + 56px)}.strip{position:relative;z-index:3}
+.perks{display:grid;grid-template-columns:1fr 1.15fr;gap:56px;align-items:start}
+.perk-l{position:sticky;top:110px}.perk-l h2{font-size:clamp(38px,5vw,68px);letter-spacing:-.04em;line-height:1}
+.ic{font:italic 400 1.1em "Instrument Serif",serif;letter-spacing:0;background:linear-gradient(90deg,var(--amber2),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
+.plist{border-top:1px solid rgba(232,168,86,.55)}
+.pi{display:grid;grid-template-columns:72px 1fr 60px;gap:16px;padding:26px 18px;border-bottom:1px solid var(--line);transition:background .3s}
+.pi:hover{background:linear-gradient(90deg,rgba(232,168,86,.15),transparent)}
+.pn{font:italic 400 42px "Instrument Serif",serif;color:var(--amber);line-height:1}
+.pi h3{font-size:22px;letter-spacing:-.03em;margin:2px 0 8px}.pi p{margin:0;color:var(--mut)}
+.pic{width:56px;height:56px;border-radius:10px;display:grid;place-items:center;border:1px solid var(--line);color:var(--amber2);transition:.3s}
+.pi:hover .pic{background:var(--amber2);color:#1a1206;box-shadow:0 0 30px rgba(232,168,86,.45)}
+@media(max-width:860px){.perks{grid-template-columns:1fr;gap:28px}.perk-l{position:static}.pi{grid-template-columns:44px 1fr 44px;padding:20px 8px}.pic{width:44px;height:44px}.two{grid-template-columns:1fr}}
+.dl:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn.lg{padding:14px 26px;font-size:15px}
+.trust{display:flex;gap:10px 24px;flex-wrap:wrap;margin-top:26px;color:var(--mut);font-size:13px}
+.trust span::before{content:"✓";color:var(--amber2);margin-right:8px;text-shadow:0 0 12px var(--amber)}
+.tw{will-change:transform;transform-style:preserve-3d}
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+.code{border:1px solid transparent;background:linear-gradient(180deg,#14110c,#0c0b09) padding-box,conic-gradient(from var(--a),rgba(232,168,86,.18) 0%,rgba(232,168,86,.18) 62%,var(--amber2) 80%,#fff3d6 86%,rgba(232,168,86,.18) 100%) border-box;animation:pulse 4s ease-in-out infinite,rot 7s linear infinite}
+@keyframes rot{to{--a:360deg}}
+#cur{position:fixed;left:0;top:0;width:34px;height:34px;margin:-17px 0 0 -17px;border:1.5px solid rgba(255,212,138,.6);border-radius:50%;pointer-events:none;z-index:200;opacity:0;will-change:transform;transition:opacity .3s,width .25s,height .25s,margin .25s,background .25s,border-color .25s}
+#cur.on{opacity:1}#cur.hov{width:58px;height:58px;margin:-29px 0 0 -29px;background:rgba(232,168,86,.14);border-color:var(--amber2)}
+@media(pointer:coarse){#cur{display:none}}
+@media(prefers-reduced-motion:reduce){#cur{display:none}.code{animation:none}}
+.sec .lbl{font-size:12px}.lead{font-size:16px}
+/* perf : animations composées par le GPU */
+header{backdrop-filter:none!important;background:rgba(10,10,10,.92)}.demo{backdrop-filter:none;background:rgba(10,12,16,.92)}
+.shine{filter:none;animation:sh 7s linear infinite}@keyframes sh{0%,45%{background-position:0 0}100%{background-position:-260% 0}}
+.code{border:0;background:none;animation:none;-webkit-box-reflect:unset;box-shadow:0 0 90px rgba(232,168,86,.22)}
+.code::before{content:"";position:absolute;top:50%;left:50%;right:auto;bottom:auto;width:170%;height:auto;aspect-ratio:1;translate:-50% -50%;background:conic-gradient(rgba(232,168,86,.2) 0 58%,var(--amber2) 78%,#fff3d6 85%,rgba(232,168,86,.2) 100%);animation:spin 7s linear infinite;z-index:0}
+.code::after{content:"";position:absolute;inset:1px;border-radius:13px;background:linear-gradient(180deg,#14110c,#0c0b09);z-index:0}
+.code .bar,.code pre{position:relative;z-index:1}
+@keyframes spin{to{rotate:360deg}}
+.tw{position:relative}.tw::after{content:"";position:absolute;left:10%;right:10%;bottom:-40px;height:34px;background:radial-gradient(ellipse at 50% 0,rgba(232,168,86,.4),transparent 70%);filter:blur(7px);pointer-events:none}
+@media(max-width:860px){.tw::after{display:none}}
+@media(prefers-reduced-motion:reduce){.code::before,.shine{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas><div class="glow"></div><div id="spot"></div><div id="prog"></div><div id="toast" role="status" aria-live="polite"></div><div id="cur"></div>
+
+<div id="intro" aria-hidden="true">
+  <div class="ctr" id="ctr"><div class="orb"></div><div class="nm">SPTX VERSE</div><div class="pb"><i id="pb"></i></div><div class="pct" id="pct">000%</div></div>
+  <div class="skip">Cliquer pour passer l’intro</div><canvas id="wv"></canvas>
+</div>
+
+<header>
+  <a class="logo" href="#/">SPTX VERSE</a>
+  <nav id="nav">
+    <a href="#/" data-r="">Accueil</a><a href="#/bibliotheque" data-r="bibliotheque">Bibliothèque</a><a href="#/idees" data-r="idees">Idées</a><a href="#/documentation" data-r="documentation">Documentation</a><a href="#/apropos" data-r="apropos">À propos</a><a href="https://discord.gg/sptx" target="_blank" rel="noopener">Discord</a><a href="#/admin" data-r="admin" id="admL" hidden>Admin</a>
+  </nav>
+  <div class="acts" id="acts"></div><button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false"></button>
+</header>
+
+<main>
+<section class="page" data-p="">
+  <div class="hero">
+    <div class="coord kk" id="xy">X 0000 · Y 0000</div>
+    <svg class="hbolt" viewBox="0 0 32 100" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0d0"/><stop offset="1" stop-color="#e8a856"/></linearGradient></defs><path d="M16 0L12 9L19 19L10 31L20 43L11 55L19 67L12 79L17 90L16 100" fill="none" stroke="url(#hg)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/></svg>
+    <div>
+      <div class="lbl kk"><span id="kick">BIBLIOTHÈQUE POUR UEFN</span></div>
+      <h1 class="big"><span class="ln"><span class="shine">Systèmes Verse</span></span><span class="ln"><em>prêts pour ton île UEFN.</em></span></h1>
+      <p class="lead up" style="--d:.9s">Choisis un système, copie son code ou télécharge-le, puis ajoute-le à ton île. Simple, rapide, expliqué.</p>
+      <div class="cta up" style="--d:1.05s"><a class="btn pri lg" href="#/bibliotheque">Voir les systèmes</a><a class="btn lg" href="https://discord.gg/sptx" target="_blank" rel="noopener">Rejoindre le Discord</a></div>
+      <div class="trust up" style="--d:1.2s"><span>Code lisible</span><span>Démo avant de choisir</span><span>Aide de l’équipe de dev</span></div>
+    </div>
+    <div class="tw"><div class="code slide"><div class="bar"><span><b>sptx_device.verse</b></span><span>UEFN · VS Code</span></div>
+<pre id="typed"></pre></div></div>
+  </div>
+  <div class="strip"><div id="mq"></div></div>
+  <div class="sec"><div class="row" style="margin:0 0 28px"><div><div class="lbl">01 · Derniers systèmes</div><h2 class="t">Choisis ton système</h2></div><a class="btn" href="#/bibliotheque">Tout voir</a></div>
+    <div class="grid g3" id="feat"></div></div>
+  <div class="sec"><div class="lbl">02 · Comment ça marche</div><h2 class="t">Trois étapes, c’est tout</h2>
+    <div class="grid g3" style="margin-top:28px">
+      <div class="card"><span class="stp">1</span><h3 style="margin-top:16px">Choisis</h3><p>Parcours la bibliothèque et ouvre le système qui te plaît. Regarde sa démo.</p></div>
+      <div class="card"><span class="stp">2</span><h3 style="margin-top:16px">Récupère</h3><p>Copie le code ou télécharge le fichier, gratuit ou payant selon le système.</p></div>
+      <div class="card"><span class="stp">3</span><h3 style="margin-top:16px">Installe</h3><p>Ajoute-le dans UEFN et teste. L’équipe de dev t’aide si besoin.</p></div>
+    </div></div>
+  <div class="sec perks"><div class="perk-l"><div class="lbl">03 · Ce qui est inclus</div><h2 class="t">Ce que tu as en téléchargeant <span class="ic">ici</span></h2><p class="lead">La qualité, la réactivité et l’originalité, garanties par l’équipe de dev.</p></div><div class="plist"><div class="pi"><span class="pn">01</span><div><h3>Tes fichiers tout de suite</h3><p>Ouvre la fiche, copie le code ou récupère le fichier : tout est disponible immédiatement.</p></div><span class="pic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg></span></div><div class="pi"><span class="pn">02</span><div><h3>Les mises à jour sont incluses</h3><p>Epic change quelque chose ? L’équipe de dev corrige et tu récupères la version à jour.</p></div><span class="pic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7M21 4v5h-5"/></svg></span></div><div class="pi"><span class="pn">03</span><div><h3>L’équipe de dev t’aide à installer</h3><p>Après ton téléchargement, l’équipe de dev t’aide à installer ton système ou ton asset.</p></div><span class="pic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></span></div><div class="pi"><span class="pn">04</span><div><h3>Tu vois la démo avant</h3><p>Chaque système a sa démo filmée en jeu. Tu regardes, puis tu décides.</p></div><span class="pic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4l13 8-13 8z"/></svg></span></div></div></div>
+  <div class="sec"><div class="card band"><div><h3 style="font-size:26px">Une question ? Une idée ?</h3><p style="margin:8px 0 0">Rejoins la communauté sur Discord : l’équipe de dev te répond directement.</p></div><a class="btn pri lg" href="https://discord.gg/sptx" target="_blank" rel="noopener">Rejoindre le Discord</a></div></div>
+</section>
+
+<section class="page" data-p="bibliotheque">
+  <div class="lbl">Ressources</div>
+  <div class="tools" style="grid-template-columns:1fr 1fr 200px;align-items:end;margin:0">
+    <div><h2 class="t">Bibliothèque Verse</h2><p class="lead">Des posts à parcourir, lire, copier et télécharger.</p></div>
+    <div><label for="q">Rechercher dans la bibliothèque</label><input id="q" placeholder="Titre, catégorie, étiquette ou code…"></div>
+    <div><label for="so">Trier par</label><select id="so"><option>Plus récent</option><option>Plus ancien</option><option>Titre A–Z</option></select></div>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="mono" style="font-size:12px;color:var(--mut)" id="cnt">0 résultats</div>
+  <div class="grid g3" id="lib" style="margin-top:14px"></div>
+</section>
+
+<section class="page" data-p="idees">
+  <div class="lbl">Communauté</div><h2 class="t">Idées</h2>
+  <p class="lead">Imaginez une mécanique, partagez son fonctionnement et échangez autour des idées de la communauté.</p>
+  <p class="note">Mode démonstration : idées et discussions enregistrées uniquement sur cet appareil.</p>
+  <div class="side">
+    <div class="card"><h3>Partager une idée</h3>
+      <label for="it">Titre de l’idée</label><input id="it">
+      <label for="id">Comment ça marche ?</label><textarea id="id" rows="5"></textarea>
+      <label for="ic">Catégorie (facultatif)</label><select id="ic"><option>Sans catégorie</option><option>Gameplay</option><option>Interface</option><option>Outils</option></select>
+      <label for="ii">Importer une image</label><input id="ii" type="file" accept="image/*">
+      <div class="cta"><button class="btn pri" id="pub">Publier l’idée</button></div>
+    </div>
+    <div><div class="row" style="margin:0 0 14px"><h3 style="font-size:20px">Les idées de la communauté</h3><span class="mono" id="ic2" style="font-size:12px;color:var(--mut)">0 idées</span></div><div class="grid" id="ideas"></div></div>
+  </div>
+</section>
+
+<section class="page" data-p="documentation">
+  <div class="lbl">Apprendre</div><h2 class="t">Documentation SPTX</h2>
+  <p class="lead">Un parcours éditorial pour découvrir Verse, relier vos appareils et tester dans UEFN. Vérifiez les API de votre version avant utilisation.</p>
+  <div class="tools"><div><label for="dq">Rechercher un sujet</label><input id="dq" placeholder="Rechercher un sujet"></div><div><label for="dl">Niveau</label><select id="dl"><option>Tous niveaux</option><option>Débutant</option><option>Intermédiaire</option></select></div></div>
+  <div class="grid g2" id="docs" style="margin-top:18px"></div>
+</section>
+
+<section class="page" data-p="apropos">
+  <div class="lbl">Le projet</div><h2 class="t">Construire, comprendre, partager.</h2>
+  <p class="lead">SPTX Verse réunit des ressources Verse et des repères de travail pour les projets UEFN, dans un espace lisible et facile à explorer.</p>
+  <div class="grid g2" style="margin-top:30px">
+    <div class="card"><h3>La mission</h3><p>Rendre les exemples plus simples à trouver et à examiner, sans remplacer les tests dans UEFN ni la documentation de référence.</p></div>
+    <div class="card"><h3>Dans la bibliothèque</h3><p>Des posts publiés avec leurs descriptions, étiquettes, dates et sources Verse lorsqu’elles sont disponibles.</p></div>
+    <div class="card"><h3>Pour qui ?</h3><p>Pour les créateurs UEFN qui découvrent Verse comme pour ceux qui veulent relire un exemple avant de l’adapter.</p></div>
+    <div class="card"><h3>Contribuer ou signaler un problème</h3><p>Partagez une remarque ou signalez une erreur à la communauté. Vérifiez et testez toujours un extrait avant de l’utiliser.</p><a class="btn" href="https://discord.gg/sptx" target="_blank" rel="noopener">Rejoindre le Discord</a></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h3>Un parcours simple</h3><div class="grid g3" style="margin-top:14px;color:var(--mut)"><span>1 · Parcourir les ressources</span><span>2 · Lire et tester dans UEFN</span><span>3 · Partager un retour</span></div></div>
+</section>
+
+<section class="page" data-p="admin">
+  <div class="lbl">Espace admin</div><h2 class="t">Publier un post</h2>
+  <p class="lead">Les posts publiés apparaissent dans la bibliothèque et sur l’accueil.</p>
+  <div class="side">
+    <div class="card"><h3>Nouveau post</h3>
+      <label for="at">Titre</label><input id="at">
+      <label for="ac">Catégorie</label><select id="ac"><option>Systèmes Verse</option><option>Packs d’assets</option><option>Gameplay</option><option>Interface</option><option>Outils</option></select>
+      <label for="ad">Description</label><textarea id="ad" rows="3"></textarea>
+      <div class="two"><div><label for="av">Version</label><input id="av" value="V1.0"></div><div><label for="apr">Prix en € (0 = gratuit)</label><input id="apr" type="number" min="0" step="0.01" value="0"></div></div>
+      <div class="two"><div><label for="afi">Fichiers</label><input id="afi" value="1 fichier .verse"></div><div><label for="adl">Téléchargements</label><input id="adl" type="number" min="0" value="0"></div></div>
+      <div class="two"><div><label for="ar">Note (0 à 5)</label><input id="ar" type="number" min="0" max="5" step="0.1" value="0"></div><div><label for="aim">Image de couverture</label><input id="aim" type="file" accept="image/*"></div></div>
+      <label for="ade">Lien de la démo (facultatif)</label><input id="ade" placeholder="https://…">
+      <label for="alk">Lien de téléchargement (gratuit) ou lien de paiement (payant)</label><input id="alk" placeholder="https://…">
+      <label for="acode">Code Verse</label><textarea id="acode" rows="7" class="mono"></textarea>
+      <label style="display:flex;gap:8px;align-items:center"><input id="af" type="checkbox" style="width:auto">Mettre en avant</label>
+      <div class="cta"><button class="btn pri" id="apub">Publier</button></div>
+    </div>
+    <div><h3 style="font-size:20px;margin-bottom:14px">Posts publiés</h3><div class="cta" style="margin:0 0 14px"><button class="btn" id="aexp">Copier une sauvegarde</button><button class="btn" id="aimp">Restaurer depuis le presse-papiers</button></div><div class="grid" id="alist"></div></div>
+  </div>
+</section>
+</main>
+<div id="md" class="modal" hidden><div class="card box" role="dialog" aria-modal="true" aria-labelledby="mt"><button class="x" id="mx" aria-label="Fermer">✕</button><h3 id="mt">Connexion</h3>
+  <div class="chips"><button class="chip on" data-tab="login">Connexion</button><button class="chip" data-tab="signup">Créer un compte</button></div>
+  <label for="au">Identifiant</label><input id="au" autocomplete="username"><label for="ap">Mot de passe</label><input id="ap" type="password" autocomplete="current-password">
+  <p class="note" id="ae" style="min-height:22px"></p><button class="btn pri" id="ago" style="width:100%;justify-content:center">Se connecter</button></div></div>
+<footer><div class="fcol"><b class="logo" style="font-size:14px">SPTX VERSE</b><span>Ressources Verse pour UEFN · Guide SPTX indépendant</span></div><div class="fcol"><a href="#/bibliotheque">Bibliothèque</a><a href="#/documentation">Documentation</a><a href="#/idees">Idées</a></div><div class="fcol"><a href="#/apropos">À propos</a><a href="https://discord.gg/sptx" target="_blank" rel="noopener">Discord</a></div></footer>
+
+<div id="pmod" class="modal" hidden><div class="card box" style="width:min(640px,100%)"><button class="x" id="pmx" aria-label="Fermer">✕</button><h3 id="pmt"></h3><p class="lead" id="pmd" style="margin:8px 0 14px"></p><pre class="mono cd" id="pmc" style="max-height:300px"></pre><div class="cta"><button class="btn pri" id="pmcp">Copier le code</button></div></div></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||'null')??d}catch(e){return d}},st=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let ME=ld('sptx-me',null),ACC=ld('sptx-acc',{}),POSTS=ld('sptx-posts',[]);POSTS.forEach(p=>{if(p&&p.price>0)p.code=''});
+const ADM="c06df437b91cc8ad2d13d4bdf685e5c89afb435ac3e9e1089437888d9bb08f0a";
+const HS=async x=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(x)))].map(b=>b.toString(16).padStart(2,'0')).join('');
+const si=u=>/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(u||'')?u:'',sl=u=>/^https?:\/\//i.test(u||'')?u:'';
+const money=n=>n>0?n.toFixed(2).replace('.',',')+' €':'Gratuit';
+const SV=(d,w=20)=>`<svg width="${w}" height="${w}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+const IC={dl:SV('<path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/>'),file:SV('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',15),dls:SV('<path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/>',15),cart:SV('<circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M3 4h2l2.4 11h11l2-8H6.5"/>')};
+const fm=(p,f)=>f=='Tous'||(f=='Gratuit'&&!(p.price>0))||(f=='Payant'&&p.price>0)||(p.tags||[]).includes(f)||p.cat===f;
+const card=p=>{const free=!(p.price>0),n=p.num||POSTS.length-POSTS.indexOf(p),im=si(p.img),pay=free?'':' pay',lk=sl(p.link),dm=sl(p.demo),
+  btn=free?(lk?`<a class="dl" href="${esc(lk)}" target="_blank" rel="noopener" data-dl="${p.id}" aria-label="Télécharger">${IC.dl}</a>`:`<button class="dl" data-open="${p.id}" aria-label="Voir et télécharger">${IC.dl}</button>`):(lk?`<a class="dl pay" href="${esc(lk)}" target="_blank" rel="noopener noreferrer" data-buy="${p.id}" aria-label="Acheter">${IC.cart}</a>`:`<button class="dl pay" disabled aria-label="Bientôt disponible" title="Lien de paiement à venir">${IC.cart}</button>`);
+  return `<article class="card pc"><div class="cov"${im?` style="background-image:url(${im})"`:''}>${im?'':'<span class="ph">.verse</span>'}<span class="bdg${pay}">${free?'GRATUIT':esc(money(p.price))}</span>${dm?`<a class="demo" href="${esc(dm)}" target="_blank" rel="noopener">▶ DÉMO</a>`:''}<span class="no">N°${String(n).padStart(2,'0')}</span></div><div class="pb2"><div class="pm"><span class="cat">${esc(p.cat)}</span><span class="ver">${esc(p.version||'V1.0')}</span></div><h3>${esc(p.title)}</h3><p>${esc(p.desc)}</p><div class="mt"><span>${IC.file} ${esc(p.files||'1 fichier .verse')}</span></div><div class="mt"><span>${IC.dls} ${p.downloads||0}</span>${p.rating>0?`<span class="st">★ ${Number(p.rating).toFixed(1)}</span>`:''}</div></div><div class="pf"><b class="${free?'fr':'pr'}">${esc(money(p.price||0))}</b>${btn}</div></article>`};
+
+/* ---------- fond : courbes de niveau ambrées + particules ---------- */
+const cv=$('#bg'),cx=cv.getContext('2d');let W,H,mx=.7,my=.3;
+let DP=1;function rs(){DP=1;W=cv.width=innerWidth*DP;H=cv.height=innerHeight*DP}
+addEventListener('resize',rs);rs();
+const PT={x:innerWidth*.7,y:innerHeight*.3,sx:innerWidth*.7,sy:innerHeight*.3,cx:-99,cy:-99,card:null,h:false};
+addEventListener('pointermove',e=>{PT.x=e.clientX;PT.y=e.clientY;const t=e.target;PT.card=t.closest?t.closest('.card'):null;PT.h=!!(t.closest&&t.closest('a,button,.chip,input,select,textarea,label'));if(PT.cx<0){PT.cx=PT.x;PT.cy=PT.y}},{passive:true});
+const fld=(x,y,t)=>Math.sin(x*1.3+t)+Math.sin(y*1.7-t*.7+x*.5)+.6*Math.sin((x+y)*.9+t*.5)+.5*Math.sin(x*3.1-y*2.3+t*.3);
+const P=Array.from({length:46},()=>({x:Math.random(),y:Math.random(),r:Math.random()*1.8+.6,v:Math.random()*.00006+.00002,a:Math.random()}));
+const CS=[[3,2],[2,1],[3,1],[0,1],[3,0,2,1],[0,2],[3,0],[3,0],[0,2],[3,2,0,1],[0,1],[3,1],[2,1],[3,2]];
+let cw=0,ch=0,GRD=null;const O=[0,0];
+const SPR=(()=>{const c=document.createElement('canvas');c.width=c.height=32;const q=c.getContext('2d'),r=q.createRadialGradient(16,16,0,16,16,16);r.addColorStop(0,'rgba(255,226,170,1)');r.addColorStop(.35,'rgba(255,212,138,.55)');r.addColorStop(1,'rgba(232,168,86,0)');q.fillStyle=r;q.fillRect(0,0,32,32);return c})();
+function ep(n,x,y,a,b,c,d,L){if(n==0){O[0]=x+cw*(L-a)/(b-a);O[1]=y}else if(n==1){O[0]=x+cw;O[1]=y+ch*(L-b)/(c-b)}else if(n==2){O[0]=x+cw*(L-d)/(c-d);O[1]=y+ch}else{O[0]=x;O[1]=y+ch*(L-a)/(d-a)}}
+function draw(t){
+  cx.clearRect(0,0,W,H);const N=72,M=Math.max(18,Math.round(N*H/W)),T=t*.00028,S=N+1;cw=W/N;ch=H/M;
+  if(!GRD||GRD.length!=S*(M+1))GRD=new Float32Array(S*(M+1));
+  for(let j=0;j<=M;j++)for(let i=0;i<=N;i++)GRD[j*S+i]=fld(i/N*5+mx*.8,j/M*3+my*.8,T);
+  cx.lineWidth=1.1*DP;
+  for(let L=-2.6;L<=2.6;L+=.4){
+    cx.beginPath();
+    for(let j=0;j<M;j++)for(let i=0;i<N;i++){
+      const a=GRD[j*S+i],b=GRD[j*S+i+1],c=GRD[(j+1)*S+i+1],d=GRD[(j+1)*S+i],k=(a>L?8:0)|(b>L?4:0)|(c>L?2:0)|(d>L?1:0);
+      if(k<1||k>14)continue;const e=CS[k-1],x=i*cw,y=j*ch;
+      for(let q=0;q<e.length;q+=2){ep(e[q],x,y,a,b,c,d,L);const px=O[0],py=O[1];ep(e[q+1],x,y,a,b,c,d,L);cx.moveTo(px,py);cx.lineTo(O[0],O[1])}
+    }
+    cx.strokeStyle='rgba(232,168,86,'+(.1+.2*(1-Math.abs(L)/2.8))+')';cx.stroke();
+  }
+  for(const p of P){p.y-=p.v*16;if(p.y<0)p.y=1;cx.globalAlpha=.3+.5*Math.abs(Math.sin(t*.001+p.a*6));const z=p.r*7*(W/1400)+6;cx.drawImage(SPR,p.x*W-z/2,p.y*H-z/2,z,z)}
+  cx.globalAlpha=1}
+if(RM)draw(0);else{let last=0;(function loop(t){requestAnimationFrame(loop);if(window.PA||document.hidden||t-last<33)return;last=t;draw(t)})(0)}
+/* ---------- intro : chargement, éclair, ouverture, entrée du hero ---------- */
+function scr(el,txt,dur){const ch='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789&<>+=',t0=performance.now();(function f(n){const k=Math.min(1,(n-t0)/dur);el.textContent=[...txt].map((c,i)=>c==' '||i<k*txt.length?c:ch[Math.random()*ch.length|0]).join('');if(k<1)requestAnimationFrame(f)})(t0)}
+function gl(el,txt,dur){const ch='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789*&+',t0=performance.now();(function f(n){const r=(n-t0)/dur,k=Math.min(1,r)*.6;el.textContent=[...txt].map((c,i)=>c==' '||i<txt.length*(1-k)?c:ch[Math.random()*ch.length|0]).join('');if(r<1)requestAnimationFrame(f)})(t0)}
+(function(){
+  const it=$('#intro'),B=document.body,KT='BIBLIOTHÈQUE POUR UEFN';if(RM){it.remove();return}
+  let seen=false,fin=false;try{seen=sessionStorage.getItem('sptx-i')=='1'}catch(e){}
+  const go=()=>{B.classList.add('go');scr($('#kick'),KT,900);type()};
+  const end=()=>{if(fin)return;fin=true;it.classList.add('done');if(!B.classList.contains('go')){B.classList.add('go');type()}$('#kick').textContent=KT;B.style.overflow='';window.PA=0;try{sessionStorage.setItem('sptx-i','1')}catch(e){}};
+  B.classList.add('wait');
+  if(seen){it.remove();fin=true;setTimeout(go,80);return}
+  B.style.overflow='hidden';window.PA=1;
+  it.addEventListener('click',end);addEventListener('keydown',e=>{if(e.key=='Escape')end()});
+  requestAnimationFrame(()=>$('#pb').style.width='100%');
+  const c0=performance.now();(function c(n){const k=Math.min(1,(n-c0)/900);$('#pct').textContent=String(Math.round(k*100)).padStart(3,'0')+'%';if(k<1&&!fin)requestAnimationFrame(c)})(c0);
+  setTimeout(()=>{if(!fin)gl($('#intro .nm'),'SPTX VERSE',400)},450);
+  const cv=$('#wv'),g=cv.getContext('2d');
+  function wave(){
+    if(fin)return;
+    const d=Math.min(devicePixelRatio||1,2),W=cv.width=innerWidth*d,H=cv.height=innerHeight*d;
+    $('#ctr').style.opacity=0;it.classList.add('wave');window.PA=0;
+    const T=1800,t0=performance.now(),lag=[0,.09,.18],ys=[];for(let y=0;y<=H+1;y+=H/64)ys.push(y);
+    const ease=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+    const ed=(i,k,y,t)=>-160*d+(W+340*d)*ease(Math.max(0,Math.min(1,(k-lag[i])/.82)))+46*d*Math.sin(y/H*5.2+t*3.2-i*.6)+20*d*Math.sin(y/H*11-t*4.6+i);
+    function f(n){if(fin)return;const k=Math.min(1,(n-t0)/T),t=(n-t0)/1000;g.clearRect(0,0,W,H);
+      const line=(i,rev)=>{for(const y of rev?[...ys].reverse():ys)g.lineTo(ed(i,k,y,t),y)};
+      g.beginPath();g.moveTo(ed(0,k,0,t),0);line(0);g.lineTo(W+60,H);g.lineTo(W+60,0);g.closePath();g.fillStyle='#0a0a0a';g.fill();
+      for(const [a,b,al] of [[0,1,.17],[1,2,.1]]){g.beginPath();g.moveTo(ed(a,k,0,t),0);line(a);line(b,1);g.closePath();g.fillStyle='rgba(232,168,86,'+al+')';g.fill()}
+      [[0,3,1,34],[1,2,.55,12],[2,1.4,.3,8]].forEach(([i,w,al,bl])=>{g.beginPath();g.moveTo(ed(i,k,0,t),0);line(i);g.lineWidth=w*d;g.strokeStyle='rgba(255,228,176,'+al+')';g.shadowColor='#e8a856';g.shadowBlur=bl*d;g.stroke()});g.shadowBlur=0;
+      if(k<1)requestAnimationFrame(f);else end()}
+    f(t0);
+  }
+  setTimeout(wave,1000);setTimeout(()=>{if(!fin)go()},1850);setTimeout(end,5500);
+})();
+/* ---------- code tapé ---------- */
+const CODE=`<span class="k">using</span> { /Fortnite.com/Devices }
+<span class="k">using</span> { /Verse.org/Simulation }
+
+sptx_device := <span class="k">class</span>(creative_device):
+    <span class="c"># exemple pédagogique</span>
+    OnBegin<override>()<suspends> : void =
+        <span class="f">Print</span>("Bienvenue dans Verse")`;
+function type(){const el=$('#typed');if(el.dataset.d)return;el.dataset.d=1;
+  if(RM){el.innerHTML=CODE+'<span class="caret"></span>';return}
+  let i=0;const tmp=document.createElement('div');tmp.innerHTML=CODE;const txt=tmp.textContent;
+  (function s(){i+=2;let n=0,out='';const w=document.createElement('div');w.innerHTML=CODE;
+    const walk=(nd)=>{for(const c of [...nd.childNodes]){if(c.nodeType==3){const r=Math.max(0,Math.min(c.length,i-n));n+=c.length;c.textContent=c.textContent.slice(0,r)}else walk(c)}};walk(w);
+    el.innerHTML=w.innerHTML+'<span class="caret"></span>';if(i<txt.length)setTimeout(s,22)})()}
+if(RM)type();
+/* ---------- routage ---------- */
+function route(){const r=(location.hash.replace('#/','')||'').split('/')[0];if(r=='admin'&&!(ME&&ME.admin)){location.hash='#/';return}
+  $$('.page').forEach(p=>p.classList.toggle('on',p.dataset.p===r));
+  if(!$('.page.on'))$('[data-p=""]').classList.add('on');
+  $$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.r===r));scrollTo(0,0)}
+addEventListener('hashchange',route);route();
+$('#mq').innerHTML=('<span>◆ CRÉER</span><span>◆ EXPLORER</span><span>◆ COMPRENDRE VERSE</span><span>◆ PARTAGER</span><span>◆ UEFN</span>').repeat(8);
+/* halo qui suit la souris sur les cartes */
+
+/* ---------- bibliothèque ---------- */
+let filt='Tous';
+$('#chips').innerHTML=['Tous','Mis en avant','Gratuit','Payant','Systèmes Verse','Packs d’assets'].map((c,i)=>`<button class="chip${i?'':' on'}">${c}</button>`).join('');
+$('#chips').onclick=e=>{if(e.target.matches('.chip')){$$('#chips .chip').forEach(c=>c.classList.remove('on'));e.target.classList.add('on');filt=e.target.textContent;lib()}};
+function lib(){const q=$('#q').value.toLowerCase(),so=$('#so').selectedIndex;
+  let l=POSTS.filter(p=>fm(p,filt)&&[p.title,p.cat,p.desc,p.code,p.version].join(' ').toLowerCase().includes(q));
+  l.sort((a,b)=>so==2?a.title.localeCompare(b.title):so==1?a.date-b.date:b.date-a.date);
+  $('#cnt').textContent=l.length+' résultat'+(l.length>1?'s':'');
+  $('#lib').innerHTML=l.length?l.map(card).join(''):'<div class="empty" style="grid-column:1/-1">La bibliothèque est vide. Les posts publiés apparaîtront ici.</div>'}
+$('#q').oninput=lib;$('#so').onchange=lib;lib();
+stats();
+/* ---------- idées (stockage local, facultatif) ---------- */
+let IDEAS=[];try{IDEAS=JSON.parse(localStorage.getItem('sptx-ideas')||'[]')}catch(e){}
+const sv=()=>{try{localStorage.setItem('sptx-ideas',JSON.stringify(IDEAS))}catch(e){}};
+
+function ideas(){$('#ic2').textContent=IDEAS.length+' idée'+(IDEAS.length>1?'s':'');
+  $('#ideas').innerHTML=IDEAS.length?IDEAS.map((d,i)=>`<div class="card"><span class="tag">${esc(d.c)}</span><h3>${esc(d.t)}</h3><p>${esc(d.d)}</p>${d.img?`<img src="${d.img}" alt="" style="max-width:100%;border-radius:10px;margin-bottom:14px">`:''}<button class="chip" data-l="${i}">♥ ${d.l}</button></div>`).join(''):'<div class="empty">Aucune idée pour le moment. Publiez la première !</div>'}
+$('#ideas').onclick=e=>{const b=e.target.closest('[data-l]');if(b){IDEAS[b.dataset.l].l++;sv();ideas()}};
+$('#pub').onclick=()=>{const t=$('#it').value.trim(),d=$('#id').value.trim();if(!t||!d){toast('Ajoutez un titre et une description.');return}
+  const f=$('#ii').files[0],add=img=>{IDEAS.unshift({t,d,c:$('#ic').value,l:0,img});sv();ideas();toast('Idée publiée');$('#it').value=$('#id').value='';$('#ii').value=''};
+  if(f&&f.size<400000){const r=new FileReader();r.onload=()=>add(r.result);r.readAsDataURL(f)}else add('')};
+ideas();
+/* ---------- documentation ---------- */
+const DOCS=[['Bases','Débutant','Découvrir Verse','Verse permet de programmer des comportements interactifs dans UEFN. Commencez par un appareil simple, compilez, puis testez dans votre île.'],['Outils','Débutant','Visual Studio Code et UEFN','Ouvrez et modifiez vos fichiers Verse avec Visual Studio Code depuis votre projet UEFN. Enregistrez, compilez et lisez les diagnostics.'],['Bases','Débutant','Structure d’un fichier','Un fichier peut importer des modules avec using, puis déclarer une classe et ses fonctions. Construisez d’abord une structure minimale.'],['Bases','Débutant','using','Une déclaration using donne accès aux éléments d’un module. Importez les modules utilisés par votre fichier.'],['Appareils','Intermédiaire','À quoi sert @editable ?','Exposez un appareil de votre niveau dans le code pour le relier à votre classe depuis l’éditeur.'],['Appareils','Intermédiaire','Événements et Subscribe','Réagissez aux actions des joueurs en abonnant une fonction à l’événement d’un appareil.']];
+function docs(){const q=$('#dq').value.toLowerCase(),l=$('#dl').value;
+  $('#docs').innerHTML=DOCS.filter(d=>(l=='Tous niveaux'||d[1]==l)&&d.join(' ').toLowerCase().includes(q)).map(d=>`<div class="card"><span class="tag">${d[0]} / ${d[1]}</span><h3>${d[2]}</h3><p>${d[3]}</p><a class="btn" href="#/documentation">Lire la fiche</a></div>`).join('')||'<div class="empty">Aucun sujet ne correspond à votre recherche.</div>'}
+$('#dq').oninput=docs;$('#dl').onchange=docs;docs();
+
+/* ---------- comptes, admin, stats ---------- */
+let tab='login';
+function stats(){const F=POSTS.filter(p=>p.tags.includes('Mis en avant')),L=(F.length?F:POSTS).slice(0,3);
+  $('#feat').innerHTML=L.length?L.map(card).join(''):'<div class="empty" style="grid-column:1/-1">Les premiers systèmes arrivent bientôt. Rejoins le Discord pour être prévenu.</div>'}
+function admList(){$('#alist').innerHTML=POSTS.length?POSTS.map(p=>`<div class="card"><span class="tag">${esc(p.cat)}</span><h3>${esc(p.title)}</h3><button class="chip" data-del="${p.id}">Supprimer</button></div>`).join(''):'<div class="empty">Aucun post publié.</div>'}
+function acts(){$('#admL').hidden=!(ME&&ME.admin);$('#acts').innerHTML=ME?`<span class="usr">${ME.admin?'⚡ ':''}${esc(ME.u)}</span><button class="btn" id="out">Déconnexion</button>`:'<button class="btn hs" data-auth="login">Connexion</button><button class="btn pri" data-auth="signup">Créer un compte</button>'}
+function setTab(t){tab=t;$$('[data-tab]').forEach(c=>c.classList.toggle('on',c.dataset.tab==t));$('#mt').textContent=t=='login'?'Connexion':'Créer un compte';$('#ago').textContent=t=='login'?'Se connecter':'Créer mon compte';$('#ae').textContent=''}
+function openM(t){setTab(t);$('#md').hidden=false;$('#au').focus()}
+function closeM(){$('#md').hidden=true;$('#au').value=$('#ap').value=''}
+function login(u){ME=u;st('sptx-me',ME);acts();closeM();toast('Connecté : '+u.u);if(u.admin)location.hash='#/admin';else route()}
+document.addEventListener('click',e=>{const t=e.target,A=t.closest('[data-auth]'),T=t.closest('[data-tab]'),C=t.closest('[data-cp]'),X=t.closest('[data-del]');
+  if(A)openM(A.dataset.auth);if(T)setTab(T.dataset.tab);if(t.id=='mx'||t.id=='md')closeM();
+  if(t.id=='out'){ME=null;st('sptx-me',null);acts();route()}
+  if(C){const p=POSTS.find(x=>x.id==C.dataset.cp);try{navigator.clipboard.writeText(p.code);C.textContent='Copié';toast('Code copié dans le presse-papiers')}catch(er){C.textContent='Copie impossible'}setTimeout(()=>C.textContent='Copier le code',1500)}
+  if(X){POSTS=POSTS.filter(x=>x.id!=X.dataset.del);st('sptx-posts',POSTS);lib();stats();admList()}});
+addEventListener('keydown',e=>{if(e.key=='Escape'){closeM();$('#pmod').hidden=true}if(e.key=='Enter'&&!$('#md').hidden)$('#ago').click()});
+$('#ago').onclick=async()=>{const u=$('#au').value.trim().toLowerCase(),p=$('#ap').value,m=$('#ae');
+  if(!u||!p){m.textContent='Renseignez votre identifiant et votre mot de passe.';return}
+  const h=await HS(u+':'+p);
+  if(tab=='login'){if(h===ADM)login({u:'Admin',admin:1});else if(ACC[u]===h)login({u});else m.textContent='Identifiant ou mot de passe incorrect.'}
+  else{if(u.length<3||p.length<4){m.textContent='Identifiant : 3 caractères minimum. Mot de passe : 4 minimum.';return}
+    if(ACC[u]||u=='portail'){m.textContent='Cet identifiant est déjà pris.';return}
+    ACC[u]=h;st('sptx-acc',ACC);login({u})}};
+function shrink(f){return new Promise(r=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,900/im.width),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);r(c.toDataURL('image/jpeg',.82))};im.onerror=()=>r('');im.src=fr.result};fr.onerror=()=>r('');fr.readAsDataURL(f)})}
+$('#apub').onclick=async()=>{const t=$('#at').value.trim();if(!t){toast('Ajoutez un titre.');return}
+  const pr0=Math.max(0,+$('#apr').value||0),hadCode=!!$('#acode').value.trim(),f=$('#aim').files[0],img=f?await shrink(f):'',num=POSTS.reduce((m,x)=>Math.max(m,x.num||0),0)+1;
+  POSTS.unshift({id:Date.now(),num,title:t,cat:$('#ac').value,desc:$('#ad').value.trim(),code:pr0>0?'':$('#acode').value,version:$('#av').value.trim()||'V1.0',price:Math.max(0,+$('#apr').value||0),files:$('#afi').value.trim(),downloads:Math.max(0,+$('#adl').value||0),rating:Math.min(5,Math.max(0,+$('#ar').value||0)),demo:sl($('#ade').value.trim()),link:sl($('#alk').value.trim()),img,tags:['Ajout récent','Opérationnel'].concat($('#af').checked?['Mis en avant']:[]),date:Date.now()});
+  st('sptx-posts',POSTS);['#at','#ad','#acode','#ade','#alk','#aim'].forEach(i=>$(i).value='');$('#av').value='V1.0';$('#apr').value=0;$('#afi').value='1 fichier .verse';$('#adl').value=0;$('#ar').value=0;$('#af').checked=false;
+  lib();stats();admList();toast(pr0>0&&hadCode?'Post payant publié. Le code n’est pas conservé : la plateforme de paiement envoie le fichier.':'Post publié')};
+acts();admList();stats();
+
+
+let tt;function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('on'),2400)}
+const bu=$('#burger'),shut=()=>{$('#nav').classList.remove('open');bu.setAttribute('aria-expanded','false')};
+bu.onclick=()=>{const o=$('#nav').classList.toggle('open');bu.setAttribute('aria-expanded',o)};
+$('#nav').addEventListener('click',shut);addEventListener('hashchange',shut);addEventListener('resize',shut);
+let pg=0;addEventListener('scroll',()=>{if(pg)return;pg=requestAnimationFrame(()=>{pg=0;const h=document.documentElement;$('#prog').style.transform='scaleX('+Math.min(1,scrollY/Math.max(1,h.scrollHeight-innerHeight))+')'})},{passive:true});
+$('#aexp').onclick=async()=>{try{await navigator.clipboard.writeText(JSON.stringify(POSTS));toast('Sauvegarde copiée')}catch(e){toast('Copie impossible')}};
+$('#aimp').onclick=async()=>{try{const a=JSON.parse(await navigator.clipboard.readText());if(!Array.isArray(a)||a.some(p=>!p||!p.title))throw 0;
+  POSTS=a.map(p=>({id:+p.id||Date.now()+Math.floor(Math.random()*1000),title:String(p.title),cat:String(p.cat||''),desc:String(p.desc||''),code:+p.price>0?'':String(p.code||''),tags:Array.isArray(p.tags)?p.tags.map(String):['Ajout récent'],date:+p.date||Date.now(),num:+p.num||0,version:String(p.version||'V1.0'),price:Math.max(0,+p.price||0),files:String(p.files||''),downloads:Math.max(0,+p.downloads||0),rating:Math.min(5,Math.max(0,+p.rating||0)),demo:sl(p.demo),link:sl(p.link),img:si(p.img)}));
+  st('sptx-posts',POSTS);lib();stats();admList();toast('Sauvegarde restaurée')}catch(e){toast('Sauvegarde invalide ou presse-papiers inaccessible')}};
+
+let cur=null;
+function showPost(p){if(p.price>0)return;cur=p;$('#pmt').textContent=p.title;$('#pmd').textContent=p.desc||'';$('#pmc').textContent=p.code||'Aucun code disponible pour ce post.';$('#pmcp').hidden=!p.code;$('#pmod').hidden=false}
+$('#pmx').onclick=()=>$('#pmod').hidden=true;
+$('#pmod').addEventListener('click',e=>{if(e.target.id=='pmod')e.currentTarget.hidden=true});
+$('#pmcp').onclick=async()=>{try{await navigator.clipboard.writeText(cur.code);toast('Code copié dans le presse-papiers')}catch(e){toast('Copie impossible')}};
+document.addEventListener('click',e=>{const o=e.target.closest('[data-open],[data-dl]');if(!o)return;const p=POSTS.find(x=>x.id==(o.dataset.open||o.dataset.dl));if(!p)return;if(p.price>0)return;p.downloads=(p.downloads||0)+1;st('sptx-posts',POSTS);setTimeout(()=>{lib();stats()},0);if(o.dataset.open)showPost(p)});
+$('#apr').addEventListener('input',()=>{const x=+$('#apr').value>0,c=$('#acode');c.disabled=x;c.placeholder=x?'Post payant : le fichier est livré par la plateforme de paiement, rien à coller ici.':''});
+
+const spotEl=$('#spot'),curEl=$('#cur'),twEl=document.querySelector('.tw'),xyEl=$('#xy'),homeEl=document.querySelector('[data-p=""]');let lxy='',lh=false,lc=null;
+(function tick(){requestAnimationFrame(tick);
+  PT.sx+=(PT.x-PT.sx)*.09;PT.sy+=(PT.y-PT.sy)*.09;mx=PT.sx/innerWidth;my=PT.sy/innerHeight;
+  spotEl.style.transform='translate3d('+PT.sx.toFixed(1)+'px,'+PT.sy.toFixed(1)+'px,0)';
+  if(RM)return;
+  if(PT.cx>=0){PT.cx+=(PT.x-PT.cx)*.24;PT.cy+=(PT.y-PT.cy)*.24;curEl.style.transform='translate3d('+PT.cx.toFixed(1)+'px,'+PT.cy.toFixed(1)+'px,0)';curEl.classList.add('on')}
+  if(PT.h!==lh){lh=PT.h;curEl.classList.toggle('hov',lh)}
+  if(PT.card){if(PT.card!==lc)lc=PT.card;const r=PT.card.getBoundingClientRect();PT.card.style.setProperty('--mx',(PT.x-r.left).toFixed(0)+'px');PT.card.style.setProperty('--my',(PT.y-r.top).toFixed(0)+'px')}
+  if(homeEl.classList.contains('on')){
+    const nx=PT.sx/innerWidth-.5,ny=PT.sy/innerHeight-.5;
+    if(twEl)twEl.style.transform='perspective(1200px) rotateY('+(nx*-7).toFixed(2)+'deg) rotateX('+(ny*6).toFixed(2)+'deg)';
+    const t='X '+String(PT.x|0).padStart(4,'0')+' · Y '+String(PT.y|0).padStart(4,'0');if(t!==lxy){lxy=t;xyEl.textContent=t}
+  }
+})();
+</script>
+</body>
+</html>
