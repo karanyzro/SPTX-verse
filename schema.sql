@@ -1,0 +1,37 @@
+CREATE TABLE IF NOT EXISTS posts (
+  id TEXT PRIMARY KEY,
+  payload TEXT NOT NULL,
+  created_at INTEGER NOT NULL
+);
+CREATE TABLE IF NOT EXISTS ideas (
+  id TEXT PRIMARY KEY,
+  author TEXT NOT NULL,
+  title TEXT NOT NULL,
+  body TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT '',
+  created_at INTEGER NOT NULL
+);
+CREATE TABLE IF NOT EXISTS verse_notes (
+  id TEXT PRIMARY KEY,
+  post_id TEXT NOT NULL,
+  author TEXT NOT NULL,
+  body TEXT NOT NULL,
+  created_at INTEGER NOT NULL,
+  FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS verse_comments (
+  id TEXT PRIMARY KEY,
+  post_id TEXT NOT NULL,
+  author TEXT NOT NULL,
+  body TEXT NOT NULL,
+  created_at INTEGER NOT NULL,
+  FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS verse_ratings (
+  post_id TEXT NOT NULL,
+  author TEXT NOT NULL,
+  rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
+  updated_at INTEGER NOT NULL,
+  PRIMARY KEY(post_id, author),
+  FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
+);
